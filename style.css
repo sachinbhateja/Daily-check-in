@@ -1,0 +1,129 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: linear-gradient(135deg, #020617, #0f172a);
+  color: #e5e7eb;
+}
+
+/* Layout */
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+/* Card */
+.card {
+  background: #020617;
+  border-radius: 16px;
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+/* Headings */
+h1 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+/* Wallet text */
+.wallet {
+  font-size: 13px;
+  opacity: 0.75;
+  word-break: break-all;
+  margin-bottom: 16px;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 16px 0 20px;
+}
+
+.stat {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 12px 8px;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.05s ease, opacity 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.success {
+  background: #22c55e;
+  color: #022c22;
+}
+
+/* Messages */
+.message {
+  margin-top: 12px;
+  font-size: 14px;
+  min-height: 18px;
+}
+
+/* Countdown */
+.countdown {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+/* Mobile polish */
+@media (max-width: 360px) {
+  .card {
+    padding: 20px 16px;
+  }
+
+  .value {
+    font-size: 22px;
+  }
+}
+
