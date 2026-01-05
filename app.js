@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔥 Base MAINNET contract address
   const CONTRACT_ADDRESS = "0x074F7bf0837ef40E042b14749Bd43bC0aCc30Aed";
 
+  // Base Mainnet
+  const BASE_CHAIN_ID = 8453;
+  const BASE_CHAIN_HEX = "0x2105";
+
   const ABI = [
     "function checkIn() external",
     "function getUser(address) view returns (uint256,uint256,uint256)"
@@ -36,20 +40,21 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
-      signer = provider.getSigner();
 
+      // 🔁 Check & switch network
       const network = await provider.getNetwork();
-
-      // Base Mainnet = 8453
-      if (network.chainId !== 8453) {
-        messageEl.innerText = "❌ Please switch to Base Mainnet";
-        return;
+      if (network.chainId !== BASE_CHAIN_ID) {
+        await switchToBase();
       }
+
+      // 🔄 Re-init after switch
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      signer = provider.getSigner();
 
       const address = await signer.getAddress();
 
       walletEl.innerText =
-        "Wallet: " + address.slice(0, 6) + "..." + address.slice(-4);
+        `Wallet: ${address.slice(0, 6)}...${address.slice(-4)}`;
 
       connectBtn.innerText = "Connected";
       connectBtn.disabled = true;
@@ -62,7 +67,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } catch (err) {
       console.error("Connect error:", err);
-      messageEl.innerText = "❌ Wallet connected but network mismatch";
+      messageEl.innerText = "❌ Wallet connection cancelled or failed";
+    }
+  }
+
+  // ======================
+  // SWITCH TO BASE MAINNET
+  // ======================
+  async function switchToBase() {
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: BASE_CHAIN_HEX }]
+      });
+    } catch (err) {
+      // Base not added to MetaMask
+      if (err.code === 4902) {
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+            chainId: BASE_CHAIN_HEX,
+            chainName: "Base Mainnet",
+            nativeCurrency: {
+              name: "Ether",
+              symbol: "ETH",
+              decimals: 18
+            },
+            rpcUrls: ["https://mainnet.base.org"],
+            blockExplorerUrls: ["https://basescan.org"]
+          }]
+        });
+      } else {
+        throw err;
+      }
     }
   }
 
