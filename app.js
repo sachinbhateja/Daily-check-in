@@ -1,26 +1,23 @@
+/* ==========================
+   BASE MINI APP READY (FIXED)
+   ========================== */
+window.onload = () => {
+  if (window.MiniApp && window.MiniApp.actions) {
+    window.MiniApp.actions.ready();
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ======================
-     BASE MINI APP READY
-     ====================== */
-  if (window.miniapp && window.miniapp.actions) {
-    window.miniapp.actions.ready();
-  }
-
-  /* ======================
-     GLOBAL STATE
-     ====================== */
   let provider;
   let signer;
   let contract;
   let countdownInterval;
 
-  const DAY = 24 * 60 * 60; // seconds
+  const DAY = 24 * 60 * 60;
 
-  // 🔥 Base MAINNET contract
   const CONTRACT_ADDRESS = "0x074F7bf0837ef40E042b14749Bd43bC0aCc30Aed";
 
-  // Base Mainnet
   const BASE_CHAIN_ID = 8453;
   const BASE_CHAIN_HEX = "0x2105";
 
@@ -31,9 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isBaseApp = !!window.ethereum?.isBaseWallet;
 
-  /* ======================
-     UI ELEMENTS
-     ====================== */
   const connectBtn = document.getElementById("connect");
   const checkInBtn = document.getElementById("checkin");
   const walletEl = document.getElementById("wallet");
@@ -43,24 +37,19 @@ document.addEventListener("DOMContentLoaded", () => {
   connectBtn.addEventListener("click", connectWallet);
   checkInBtn.addEventListener("click", checkIn);
 
-  /* ======================
-     CONNECT WALLET
-     ====================== */
   async function connectWallet() {
     if (!window.ethereum) {
-      alert("Wallet not found");
+      messageEl.innerText = "❌ Wallet not found";
       return;
     }
 
     try {
       provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      // Request accounts ONLY outside Base App
       if (!isBaseApp) {
         await provider.send("eth_requestAccounts", []);
       }
 
-      // Ensure Base Mainnet
       const network = await provider.getNetwork();
       if (network.chainId !== BASE_CHAIN_ID) {
         await switchToBase();
@@ -79,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
       contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
       await loadUserData(address);
-
       messageEl.innerText = "✅ Wallet connected";
 
     } catch (err) {
@@ -88,9 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ======================
-     SWITCH TO BASE MAINNET
-     ====================== */
   async function switchToBase() {
     try {
       await window.ethereum.request({
@@ -104,11 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
           params: [{
             chainId: BASE_CHAIN_HEX,
             chainName: "Base Mainnet",
-            nativeCurrency: {
-              name: "Ether",
-              symbol: "ETH",
-              decimals: 18
-            },
+            nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
             rpcUrls: ["https://mainnet.base.org"],
             blockExplorerUrls: ["https://basescan.org"]
           }]
@@ -119,25 +100,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ======================
-     LOAD USER DATA
-     ====================== */
   async function loadUserData(address) {
     const [lastCheckIn, streak, points] =
       await contract.getUser(address);
 
-    document.getElementById("streak").innerText =
-      streak.toNumber();
-
-    document.getElementById("points").innerText =
-      points.toNumber();
+    document.getElementById("streak").innerText = streak.toNumber();
+    document.getElementById("points").innerText = points.toNumber();
 
     startCountdown(lastCheckIn.toNumber());
   }
 
-  /* ======================
-     CHECK IN
-     ====================== */
   async function checkIn() {
     if (!contract) {
       messageEl.innerText = "❌ Connect wallet first";
@@ -147,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       checkInBtn.disabled = true;
       checkInBtn.innerText = "Checking in...";
-      messageEl.innerText = "";
 
       const tx = await contract.checkIn();
       await tx.wait();
@@ -156,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
       await loadUserData(address);
 
       messageEl.innerText = "✅ Check-in successful!";
-
     } catch (err) {
       messageEl.innerText =
         err.reason || "❌ Already checked in today";
@@ -165,13 +135,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ======================
-     COUNTDOWN
-     ====================== */
   function startCountdown(lastCheckIn) {
     clearInterval(countdownInterval);
     updateCountdown(lastCheckIn);
-
     countdownInterval = setInterval(() => {
       updateCountdown(lastCheckIn);
     }, 1000);
