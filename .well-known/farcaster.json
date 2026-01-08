@@ -1,0 +1,15 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "miniapp": {
+    "name": "Daily Check-In",
+    "description": "Daily onchain check-in app on Base",
+    "iconUrl": "https://daily-check-in-cyan.vercel.app/icon.png",
+    "homeUrl": "https://daily-check-in-cyan.vercel.app",
+    "chains": ["base"],
+    "permissions": ["wallet"]
+  }
+}
