@@ -48,6 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isBaseApp) {
         await provider.send("eth_requestAccounts", []);
       }
+      
+if (window.miniapp) {
+  window.miniapp.actions.ready();
+}
+
 
       // Ensure Base Mainnet
       const network = await provider.getNetwork();
