@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="/base.json">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+
+  <!-- ✅ REQUIRED: Base App ownership -->
   <meta name="base:app_id" content="695f88a93ee38216e9af4d08" />
+
   <title>Daily Check-In</title>
 
-  <!-- Ethers.js (required for wallet + contract) -->
+  <!-- ✅ OFFICIAL Base Mini App SDK (required for ready signal) -->
+  <script src="https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk@latest/dist/index.umd.js"></script>
+
+  <!-- Ethers.js -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-<script src="https://unpkg.com/@farcaster/miniapp-sdk/dist/index.umd.js"></script>
-  <!-- App files -->
+
+  <!-- App -->
   <script src="app.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -43,4 +51,5 @@
   </div>
 </body>
 </html>
+
 
