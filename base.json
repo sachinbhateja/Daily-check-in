@@ -1,0 +1,19 @@
+{
+  "name": "Daily Check-In",
+  "short_name": "Check-In",
+  "description": "Daily onchain check-in app on Base",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "chain": "base",
+  "wallet_required": true,
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
