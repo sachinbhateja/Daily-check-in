@@ -1,13 +1,19 @@
-/* ==========================
-   BASE MINI APP READY (FIXED)
-   ========================== */
-window.onload = () => {
-  if (window.MiniApp && window.MiniApp.actions) {
-    window.MiniApp.actions.ready();
-  }
-};
+document.addEventListener("DOMContentLoaded", async () => {
 
-document.addEventListener("DOMContentLoaded", () => {
+  /* =================================================
+     BASE MINI APP READY (CORRECT & FINAL)
+     ================================================= */
+
+  if (window.sdk && window.sdk.actions) {
+    await window.sdk.actions.ready();
+    console.log("✅ Base Mini App ready()");
+  } else {
+    console.warn("❌ Base Mini App SDK not found");
+  }
+
+  /* =================================================
+     GLOBAL STATE
+     ================================================= */
 
   let provider;
   let signer;
@@ -17,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const DAY = 24 * 60 * 60;
 
   const CONTRACT_ADDRESS = "0x074F7bf0837ef40E042b14749Bd43bC0aCc30Aed";
-
   const BASE_CHAIN_ID = 8453;
   const BASE_CHAIN_HEX = "0x2105";
 
@@ -28,14 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isBaseApp = !!window.ethereum?.isBaseWallet;
 
+  /* =================================================
+     UI ELEMENTS
+     ================================================= */
+
   const connectBtn = document.getElementById("connect");
   const checkInBtn = document.getElementById("checkin");
   const walletEl = document.getElementById("wallet");
   const messageEl = document.getElementById("message");
   const countdownEl = document.getElementById("countdown");
 
-  connectBtn.addEventListener("click", connectWallet);
-  checkInBtn.addEventListener("click", checkIn);
+  connectBtn.onclick = connectWallet;
+  checkInBtn.onclick = checkIn;
+
+  /* =================================================
+     CONNECT WALLET
+     ================================================= */
 
   async function connectWallet() {
     if (!window.ethereum) {
@@ -76,6 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* =================================================
+     SWITCH TO BASE
+     ================================================= */
+
   async function switchToBase() {
     try {
       await window.ethereum.request({
@@ -100,6 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* =================================================
+     LOAD USER DATA
+     ================================================= */
+
   async function loadUserData(address) {
     const [lastCheckIn, streak, points] =
       await contract.getUser(address);
@@ -109,6 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     startCountdown(lastCheckIn.toNumber());
   }
+
+  /* =================================================
+     CHECK IN
+     ================================================= */
 
   async function checkIn() {
     if (!contract) {
@@ -134,6 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
       checkInBtn.innerText = "Check In";
     }
   }
+
+  /* =================================================
+     COUNTDOWN
+     ================================================= */
 
   function startCountdown(lastCheckIn) {
     clearInterval(countdownInterval);
