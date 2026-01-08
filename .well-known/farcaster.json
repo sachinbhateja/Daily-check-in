@@ -5,19 +5,20 @@
     "signature": "AAAAAAAAAAAAAAAAyhG94Fl3s2MRZwKIYr4qFzl2yhEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiSCrVbLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAul7REO_bo9AFv8iC11NYrLu4WEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATQ_-6NvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAHU2ioMuRfEo6Y1YR-jUQ3giIOJ0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAKGJQ-AC2aojwSCqHYhVSMJOkoah4VsKjETsrUVlM9ARDq0s4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABB1xr8xXBHish0AUUrRceN5pTmPkzaSMsG9sWiaEShuWcqR6mNGqBKJg31UQDXatj88BaGJq8JTUnFTvIm7potURwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZJJkkmSSZJJkkmSSZJJkkmSSZJJkkmSSZJJkkmSSZJI"
   },
   "miniapp": {
-  "version": "1",
-  "name": "Daily Check-In",
-  "subtitle": "Build your onchain streak",
-  "description": "A daily onchain check-in app on Base mainnet that tracks streaks and points.",
-  "iconUrl": "https://daily-check-in-cyan.vercel.app/icon.png",
-  "homeUrl": "https://daily-check-in-cyan.vercel.app/",
-  "chains": ["base"],
-  "permissions": ["wallet"],
-
-  "splashImageUrl": "https://daily-check-in-cyan.vercel.app/icon.png",
-  "splashBackgroundColor": "#020617",
-  "primaryCategory": "productivity",
-  "tags": ["daily", "check-in", "streak", "onchain", "base"]
+    "version": "1",
+    "name": "Daily Check-In",
+    "subtitle": "Build your onchain streak",
+    "description": "A daily onchain check-in app on Base mainnet that tracks streaks and points.",
+    "iconUrl": "https://daily-check-in-cyan.vercel.app/icon.png",
+    "homeUrl": "https://daily-check-in-cyan.vercel.app/",
+    "chains": ["base"],
+    "permissions": ["wallet"],
+    "splashImageUrl": "https://daily-check-in-cyan.vercel.app/icon.png",
+    "splashBackgroundColor": "#020617",
+    "primaryCategory": "productivity",
+    "tags": ["daily", "check-in", "streak", "onchain", "base"]
+  }
 }
+
 
 
