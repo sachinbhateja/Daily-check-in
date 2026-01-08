@@ -1,17 +1,18 @@
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
-  font-family: Inter, Arial, sans-serif;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   background: linear-gradient(135deg, #020617, #0f172a);
   color: #e5e7eb;
 }
 
 /* Layout */
 .container {
-  min-height: 100vh;
+  min-height: 100dvh; /* better for mobile */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,25 +21,25 @@ body {
 
 /* Card */
 .card {
-  background: #020617;
-  border-radius: 16px;
-  padding: 24px 20px;
   width: 100%;
-  max-width: 360px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  max-width: 380px;
+  background: #020617;
+  border-radius: 18px;
+  padding: 20px 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   text-align: center;
 }
 
-/* Headings */
+/* Title */
 h1 {
   margin: 0 0 12px;
   font-size: 22px;
 }
 
-/* Wallet text */
+/* Wallet */
 .wallet {
   font-size: 13px;
-  opacity: 0.75;
+  opacity: 0.8;
   word-break: break-all;
   margin-bottom: 16px;
 }
@@ -46,24 +47,23 @@ h1 {
 /* Stats */
 .stats {
   display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 16px 0 20px;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 .stat {
-  background: #020617;
+  flex: 1;
+  border-radius: 14px;
   border: 1px solid #1e293b;
-  border-radius: 12px;
   padding: 12px 8px;
-  width: 100%;
+  background: #020617;
 }
 
 .label {
-  display: block;
   font-size: 11px;
   opacity: 0.7;
   margin-bottom: 4px;
+  display: block;
 }
 
 .value {
@@ -74,17 +74,18 @@ h1 {
 /* Buttons */
 .btn {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin-top: 10px;
-  font-size: 15px;
-  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
   transition: transform 0.05s ease, opacity 0.2s;
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .btn:disabled {
@@ -116,14 +117,14 @@ h1 {
   opacity: 0.75;
 }
 
-/* Mobile polish */
-@media (max-width: 360px) {
-  .card {
-    padding: 20px 16px;
+/* Desktop refinement */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 24px;
   }
 
-  .value {
-    font-size: 22px;
+  .card {
+    padding: 24px;
   }
 }
 
