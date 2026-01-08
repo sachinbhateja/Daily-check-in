@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let provider;
   let signer;
   let contract;
-
-  const DAY = 24 * 60 * 60; // seconds
   let countdownInterval;
 
-  // 🔥 Base MAINNET contract address
+  const DAY = 24 * 60 * 60; // seconds
+
+  // 🔥 Base MAINNET contract
   const CONTRACT_ADDRESS = "0x074F7bf0837ef40E042b14749Bd43bC0aCc30Aed";
 
   // Base Mainnet
@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     "function getUser(address) view returns (uint256,uint256,uint256)"
   ];
 
+  // Detect Base App
+  const isBaseApp = !!window.ethereum?.isBaseWallet;
+
+  // UI elements
   const connectBtn = document.getElementById("connect");
   const checkInBtn = document.getElementById("checkin");
   const walletEl = document.getElementById("wallet");
@@ -33,41 +37,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   async function connectWallet() {
     if (!window.ethereum) {
-      alert("MetaMask not found");
+      alert("Wallet not found");
       return;
     }
 
     try {
       provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
 
-      // 🔁 Check & switch network
+      // Request accounts ONLY outside Base App
+      if (!isBaseApp) {
+        await provider.send("eth_requestAccounts", []);
+      }
+
+      // Ensure Base Mainnet
       const network = await provider.getNetwork();
       if (network.chainId !== BASE_CHAIN_ID) {
         await switchToBase();
+        provider = new ethers.providers.Web3Provider(window.ethereum);
       }
 
-      // 🔄 Re-init after switch
-      provider = new ethers.providers.Web3Provider(window.ethereum);
       signer = provider.getSigner();
-
       const address = await signer.getAddress();
 
-      walletEl.innerText =
-        `Wallet: ${address.slice(0, 6)}...${address.slice(-4)}`;
-
+      walletEl.innerText = `Wallet: ${address.slice(0, 6)}...${address.slice(-4)}`;
       connectBtn.innerText = "Connected";
       connectBtn.disabled = true;
 
       contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
       await loadUserData(address);
-
       messageEl.innerText = "✅ Wallet connected";
 
     } catch (err) {
-      console.error("Connect error:", err);
-      messageEl.innerText = "❌ Wallet connection cancelled or failed";
+      console.error(err);
+      messageEl.innerText = "❌ Wallet connection failed";
     }
   }
 
@@ -81,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
         params: [{ chainId: BASE_CHAIN_HEX }]
       });
     } catch (err) {
-      // Base not added to MetaMask
       if (err.code === 4902) {
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
@@ -107,16 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // LOAD USER DATA
   // ======================
   async function loadUserData(address) {
-    const data = await contract.getUser(address);
+    const [lastCheckIn, streak, points] = await contract.getUser(address);
 
-    const lastCheckIn = data[0].toNumber();
-    const streak = data[1].toNumber();
-    const points = data[2].toNumber();
+    document.getElementById("streak").innerText = streak.toNumber();
+    document.getElementById("points").innerText = points.toNumber();
 
-    document.getElementById("streak").innerText = streak;
-    document.getElementById("points").innerText = points;
-
-    startCountdown(lastCheckIn);
+    startCountdown(lastCheckIn.toNumber());
   }
 
   // ======================
@@ -140,10 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
       await loadUserData(address);
 
       messageEl.innerText = "✅ Check-in successful!";
-
     } catch (err) {
-      messageEl.innerText =
-        err.reason || "❌ Already checked in today";
+      messageEl.innerText = err.reason || "❌ Already checked in today";
     } finally {
       checkInBtn.innerText = "Check In";
     }
@@ -163,8 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateCountdown(lastCheckIn) {
     const now = Math.floor(Date.now() / 1000);
-    const nextCheckIn = lastCheckIn + DAY;
-    const remaining = nextCheckIn - now;
+    const remaining = lastCheckIn + DAY - now;
 
     if (lastCheckIn === 0 || remaining <= 0) {
       countdownEl.innerText = "✅ You can check in now";
@@ -178,9 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const m = Math.floor((remaining % 3600) / 60);
     const s = remaining % 60;
 
-    countdownEl.innerText =
-      `⏳ Next check-in in ${h}h ${m}m ${s}s`;
+    countdownEl.innerText = `⏳ Next check-in in ${h}h ${m}m ${s}s`;
   }
 
 });
-
