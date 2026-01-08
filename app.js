@@ -1,5 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ======================
+     BASE MINI APP READY
+     ====================== */
+  if (window.miniapp && window.miniapp.actions) {
+    window.miniapp.actions.ready();
+  }
+
+  /* ======================
+     GLOBAL STATE
+     ====================== */
   let provider;
   let signer;
   let contract;
@@ -19,10 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
     "function getUser(address) view returns (uint256,uint256,uint256)"
   ];
 
-  // Detect Base App
   const isBaseApp = !!window.ethereum?.isBaseWallet;
 
-  // UI elements
+  /* ======================
+     UI ELEMENTS
+     ====================== */
   const connectBtn = document.getElementById("connect");
   const checkInBtn = document.getElementById("checkin");
   const walletEl = document.getElementById("wallet");
@@ -32,9 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
   connectBtn.addEventListener("click", connectWallet);
   checkInBtn.addEventListener("click", checkIn);
 
-  // ======================
-  // CONNECT WALLET
-  // ======================
+  /* ======================
+     CONNECT WALLET
+     ====================== */
   async function connectWallet() {
     if (!window.ethereum) {
       alert("Wallet not found");
@@ -48,11 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isBaseApp) {
         await provider.send("eth_requestAccounts", []);
       }
-      
-if (window.miniapp) {
-  window.miniapp.actions.ready();
-}
-
 
       // Ensure Base Mainnet
       const network = await provider.getNetwork();
@@ -64,13 +70,16 @@ if (window.miniapp) {
       signer = provider.getSigner();
       const address = await signer.getAddress();
 
-      walletEl.innerText = `Wallet: ${address.slice(0, 6)}...${address.slice(-4)}`;
+      walletEl.innerText =
+        `Wallet: ${address.slice(0, 6)}...${address.slice(-4)}`;
+
       connectBtn.innerText = "Connected";
       connectBtn.disabled = true;
 
       contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
       await loadUserData(address);
+
       messageEl.innerText = "✅ Wallet connected";
 
     } catch (err) {
@@ -79,9 +88,9 @@ if (window.miniapp) {
     }
   }
 
-  // ======================
-  // SWITCH TO BASE MAINNET
-  // ======================
+  /* ======================
+     SWITCH TO BASE MAINNET
+     ====================== */
   async function switchToBase() {
     try {
       await window.ethereum.request({
@@ -110,21 +119,25 @@ if (window.miniapp) {
     }
   }
 
-  // ======================
-  // LOAD USER DATA
-  // ======================
+  /* ======================
+     LOAD USER DATA
+     ====================== */
   async function loadUserData(address) {
-    const [lastCheckIn, streak, points] = await contract.getUser(address);
+    const [lastCheckIn, streak, points] =
+      await contract.getUser(address);
 
-    document.getElementById("streak").innerText = streak.toNumber();
-    document.getElementById("points").innerText = points.toNumber();
+    document.getElementById("streak").innerText =
+      streak.toNumber();
+
+    document.getElementById("points").innerText =
+      points.toNumber();
 
     startCountdown(lastCheckIn.toNumber());
   }
 
-  // ======================
-  // CHECK IN
-  // ======================
+  /* ======================
+     CHECK IN
+     ====================== */
   async function checkIn() {
     if (!contract) {
       messageEl.innerText = "❌ Connect wallet first";
@@ -143,16 +156,18 @@ if (window.miniapp) {
       await loadUserData(address);
 
       messageEl.innerText = "✅ Check-in successful!";
+
     } catch (err) {
-      messageEl.innerText = err.reason || "❌ Already checked in today";
+      messageEl.innerText =
+        err.reason || "❌ Already checked in today";
     } finally {
       checkInBtn.innerText = "Check In";
     }
   }
 
-  // ======================
-  // COUNTDOWN
-  // ======================
+  /* ======================
+     COUNTDOWN
+     ====================== */
   function startCountdown(lastCheckIn) {
     clearInterval(countdownInterval);
     updateCountdown(lastCheckIn);
@@ -178,7 +193,9 @@ if (window.miniapp) {
     const m = Math.floor((remaining % 3600) / 60);
     const s = remaining % 60;
 
-    countdownEl.innerText = `⏳ Next check-in in ${h}h ${m}m ${s}s`;
+    countdownEl.innerText =
+      `⏳ Next check-in in ${h}h ${m}m ${s}s`;
   }
 
 });
+
